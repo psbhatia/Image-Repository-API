@@ -7,7 +7,6 @@ import java.util.UUID;
 public class Image {
 
     private final UUID id;
-
     private final String name;
 
     public Image(@JsonProperty("id") UUID id,

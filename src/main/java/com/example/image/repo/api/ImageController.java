@@ -11,7 +11,7 @@ import java.util.UUID;
 
 //This controller is responsible for the incoming requests, it invokes the business logic
 
-@RequestMapping("api/v1/image")
+@RequestMapping("api/v1/testing")
 @RestController
 public class ImageController {
 

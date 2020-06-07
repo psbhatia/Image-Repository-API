@@ -7,6 +7,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
 import com.example.image.repo.service.AmazonS3ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -59,5 +62,18 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
         }catch (AmazonServiceException e){
             e.printStackTrace();
         }
+    }
+
+    @Async
+    public byte[] downloadFileFromS3Bucket(String fileName){
+        byte[] file = null;
+        S3Object s3Object = amazonS3.getObject(awS3AudioBucket, fileName);
+        S3ObjectInputStream stream = s3Object.getObjectContent();
+        try{
+            file = IOUtils.toByteArray(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }

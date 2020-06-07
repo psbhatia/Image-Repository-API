@@ -6,4 +6,5 @@ public interface AmazonS3ClientService {
 
     void uploadFileToS3Bucket(MultipartFile multipartFile);
     void deleteFileFromS3Bucket(String fileName);
+    byte[] downloadFileFromS3Bucket(String fileName);
 }
