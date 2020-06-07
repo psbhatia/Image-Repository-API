@@ -8,10 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +22,7 @@ public class FileHandlerController {
     @Autowired
     private ImageService imageService;
 
+    /*need to add the file to the sql database*/
     @PostMapping
     public Map<String, String> uploadFile(@RequestPart(value = "file")MultipartFile multipartFile){
         this.amazonS3ClientService.uploadFileToS3Bucket(multipartFile);
@@ -34,6 +31,7 @@ public class FileHandlerController {
         return response;
     }
 
+    /*remove the file from the sql database*/
     @DeleteMapping
     public Map<String, String> deleteFile(@RequestParam("file_name") String fileName)
     {
@@ -43,20 +41,7 @@ public class FileHandlerController {
         return response;
     }
 
-//    @GetMapping
-//    public ResponseEntity<File> downloadFile(@RequestParam(value = "fileName") String fileName){
-//        byte[] data = amazonS3ClientService.downloadFileFromS3Bucket(fileName);
-//        File outputFile = new File(fileName);
-//        try(FileOutputStream outputStream = new FileOutputStream(outputFile);){
-//            outputStream.write(data);
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
+    /*search the sql database*/
     @GetMapping
     public ResponseEntity<ByteArrayResource> downloadFile(@RequestParam(value = "fileName") String key){
         byte[] data = amazonS3ClientService.downloadFileFromS3Bucket(key);

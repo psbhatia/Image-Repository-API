@@ -22,4 +22,5 @@ public class Image {
     public String getName() {
         return name;
     }
+
 }

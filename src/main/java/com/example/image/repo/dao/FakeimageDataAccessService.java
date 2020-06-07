@@ -1,6 +1,8 @@
 package com.example.image.repo.dao;
 
 import com.example.image.repo.model.Image;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -15,16 +17,34 @@ import java.util.UUID;
 public class FakeimageDataAccessService implements ImageDao{
 
     private static List<Image> DB = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public FakeimageDataAccessService(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public int insertImage(UUID id, Image image) {
-        DB.add(new Image(id, image.getName()));
-        return 1;
+//        String sql = "INSERT INTO IMAGE (id,name) VALUES (?, '?')";
+//
+//        DB.add(new Image(id, image.getName()));
+//        return 1;
+        if (image.getId() == null){
+            return jdbcTemplate.update("INSERT INTO image (id,name) VALUES (?, ?)", UUID.randomUUID(), image.getName());
+        }
+        return jdbcTemplate.update("INSERT INTO image (id,name) VALUES (?, ?)", image.getId(), image.getName());
     }
 
     @Override
     public List<Image> selectAllImage() {
-        return DB;
+        String sql = "SELECT id,name FROM image;";
+        List<Image> query = jdbcTemplate.query(sql,((resultSet, i) -> {
+            return new Image(
+                    UUID.fromString(resultSet.getString("id")),
+                    resultSet.getString("name"));
+        }));
+        return query;
     }
 
     @Override
