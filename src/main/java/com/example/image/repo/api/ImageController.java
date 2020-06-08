@@ -36,13 +36,7 @@ public class ImageController {
     //should be throwing a 404 instead of null for future
     @GetMapping(path = "{id}")
     public Image getImageById(@PathVariable("id") UUID id){
-        return imageService.getImageById(id)
-                .orElse(null);
-    }
-
-    @DeleteMapping(path = "{id}")
-    public void deleteImageById(@PathVariable("id") UUID id){
-        imageService.deleteImage(id);
+        return null;
     }
 
     @PutMapping(path = "{id}")

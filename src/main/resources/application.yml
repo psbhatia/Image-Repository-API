@@ -1,6 +1,6 @@
 app:
   datasource:
-    jdbc-url: jdbc:postgresql://localhost:5432/imagedb
+    jdbc-url: jdbc:postgresql://localhost:5432/imagerepo
     username: postgres
     password: password
     pool-size: 30

@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import com.example.image.repo.model.Image;
 import com.example.image.repo.service.AmazonS3ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -39,13 +40,13 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
        The main thread can continue to serve the user request while a background thread handles this */
 
     @Async
-    public void uploadFileToS3Bucket(MultipartFile multipartFile) {
+    public void uploadFileToS3Bucket(MultipartFile multipartFile, Image image) {
         String fileName = multipartFile.getOriginalFilename();
         try{
             File file = new File(fileName);
             FileOutputStream outputStram = new FileOutputStream(file);
             outputStram.write(multipartFile.getBytes());
-            this.amazonS3.putObject(new PutObjectRequest(this.awS3AudioBucket, fileName, file));
+            this.amazonS3.putObject(new PutObjectRequest(this.awS3AudioBucket, image.getKey(), file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

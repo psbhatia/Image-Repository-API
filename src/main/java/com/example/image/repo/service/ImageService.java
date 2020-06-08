@@ -18,7 +18,7 @@ public class ImageService {
     //injecting, autowiring into this imageDao interface
     //the fakeDao can be changed to postrges, mongodb etc
     @Autowired
-    public ImageService(@Qualifier("fakeDao") ImageDao imageDao) {
+    public ImageService(@Qualifier("postgres") ImageDao imageDao) {
         this.imageDao = imageDao;
     }
 
@@ -30,12 +30,16 @@ public class ImageService {
         return imageDao.selectAllImage();
     }
 
-    public Optional<Image> getImageById(UUID id){
+    public List<Image> searchImages(String keyword){
+        return imageDao.searchImages(keyword);
+    }
+
+    public Image getImageById(UUID id){
         return imageDao.selectImageById(id);
     }
 
     public int deleteImage(UUID id){
-        return imageDao.deleteImageById(id);
+        return imageDao.deleteImage(id);
     }
 
     public int updateImage(UUID id, Image updatedImage){

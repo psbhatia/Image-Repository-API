@@ -6,7 +6,6 @@ package com.example.image.repo.dao;
 import com.example.image.repo.model.Image;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface ImageDao {
@@ -22,9 +21,11 @@ public interface ImageDao {
 
     List<Image> selectAllImage();
 
-    Optional<Image> selectImageById(UUID id);
+    List<Image> searchImages(String keyword);
 
-    int deleteImageById(UUID id);
+    Image selectImageById(UUID id);
+
+    int deleteImage(UUID id);
 
     int updatePersonById(UUID id, Image image);
 }
