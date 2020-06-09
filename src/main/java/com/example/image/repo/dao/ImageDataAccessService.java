@@ -5,20 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-//the @repository indicates that the decorated class is a repository. A repository is a mechanism for encapsulating storeage, retrieveal
-// and search behaviour which emulates a collection of objects
 
 @Repository("postgres")
 public class ImageDataAccessService implements ImageDao{
 
-    private static List<Image> DB = new ArrayList<>();
     private final JdbcTemplate jdbcTemplate;
-    private String DELIMITER = "?";
 
     @Autowired
     public ImageDataAccessService(JdbcTemplate jdbcTemplate){
@@ -53,6 +47,9 @@ public class ImageDataAccessService implements ImageDao{
         sb.append(sql);
         sb.append(keyword);
         sb.append("%'");
+        sb.append(" OR NAME LIKE '%");
+        sb.append(keyword);
+        sb.append("%'");
         List<Image> query = jdbcTemplate.query(sb.toString(),((resultSet, i) -> {
             return new Image(
                     UUID.fromString(resultSet.getString("id")),
@@ -74,12 +71,18 @@ public class ImageDataAccessService implements ImageDao{
                     UUID.fromString(resultSet.getString("id")),
                     resultSet.getString("name"),resultSet.getString("description"));
         }));
+        if(query.size() == 0){
+            return null;
+        }
         return query.get(0);
     }
 
     @Override
     public int deleteImage(UUID id) {
         String sql = "DELETE FROM image WHERE id = '";
+        if(selectImageById(id) == null){
+            return 0;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sb.append(id.toString());

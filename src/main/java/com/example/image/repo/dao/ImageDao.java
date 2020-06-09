@@ -10,10 +10,8 @@ import java.util.UUID;
 
 public interface ImageDao {
 
-    //insert image with an id
     int insertImage(UUID id, Image image);
 
-    //insert image without an id
     default int insertImage(Image image){
         UUID id = UUID.randomUUID();
         return insertImage(id, image);

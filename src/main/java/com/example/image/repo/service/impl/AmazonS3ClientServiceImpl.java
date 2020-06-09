@@ -47,6 +47,7 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
             FileOutputStream outputStram = new FileOutputStream(file);
             outputStram.write(multipartFile.getBytes());
             this.amazonS3.putObject(new PutObjectRequest(this.awS3AudioBucket, image.getKey(), file));
+            file.delete();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

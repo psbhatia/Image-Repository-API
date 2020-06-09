@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-//This controller is responsible for the incoming requests, it invokes the business logic
+/* IGNORE THIS CONTROLLER , THIS IS USED FOR TESTING AND NOT A PART OF THE APPLICATION */
 
 @RequestMapping("api/v1/testing")
 @RestController
@@ -17,7 +17,6 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    //This is all dependancy injection
     @Autowired
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
@@ -33,7 +32,7 @@ public class ImageController {
         return imageService.getAllImages();
     }
 
-    //should be throwing a 404 instead of null for future
+
     @GetMapping(path = "{id}")
     public Image getImageById(@PathVariable("id") UUID id){
         return null;

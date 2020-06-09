@@ -16,6 +16,7 @@ import java.io.IOException;
 
 public class AuthFilter extends GenericFilterBean {
 
+    /* FILTER OUT REQUESTS IF UNAUTHORIZED */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
